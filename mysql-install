@@ -256,6 +256,6 @@ mysql -u root -ptest -e "flush privileges"
 
         echo "DataBaseName: js_$DATANAMES"
         echo "DataUser: js_$DATANAMES"
-        echo "DataPassword: js_${DATANAMES}#5402"
+        echo "DataPassword: js_${DATANAMES}#123!"
         echo "DataUser: js_$DATANAMES DataPassword: js_$DATANAMES#5402" >>/root/Mysql_Data_List.txt  
 
