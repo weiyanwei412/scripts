@@ -245,6 +245,7 @@ echo -e "################Test mysql#####################"
 TEST=`mysql -u root -ptest -e "show databases;"|grep sys|wc -l`
 if [ $TEST -ne 1 ];then
    echo -e "mysql install is flase"
+   exit 100
 else
    echo -e "mysql is install successfull"
 fi
