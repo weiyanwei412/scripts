@@ -22,11 +22,11 @@ echo -e "####Install mysql require"
 yum -y install gcc gcc-c++ openssl openssl-devel zlib zlib-devel libaio wget lsof vim-enhanced sysstat ntpdate numactl.x86_64 bc
 
 echo -e "#### 检查系统版本###"
-VSER_NUM=`cat /etc/redhat-release |grep 6.|wc -l`
+VSER_NUM=`cat /etc/redhat-release |grep 'release 6'|wc -l`
 if [ $VSER_NUM -ne 1  ]; then
     echo "this system is Centos 7"
     sed -i 's@1024@20480@g' /etc/security/limits.d/20-nproc.conf
-    IP_LAST=`ip addr |grep eth0|grep -Po '(?<=inet )(.*)(?=/24)'|awk -F . '{print $4}'`
+    IP_LAST=` ip add|grep eth0|grep inet|awk -F '/' '{print $1}'|awk -F ' ' '{print $2}'|awk -F . '{print $4}'`
 else 
     echo "this system is Centos 6"
     sed -i 's@1024@20480@g' /etc/security/limits.d/90-nproc.conf
