@@ -1,0 +1,57 @@
+#!/bin/sh
+# author:letian
+# yum -y install nmap
+#EMAIL:412166174@.qq.com
+#$1 service
+#$2 SRV_PORT
+PATH=/sbin:/bin:/usr/sbin:/usr/bin:/usr/local/bin:/usr/local/sbin
+source /etc/profile 
+#检测服务函数
+check-service(){
+SCAN_FLAG=0
+PROT_OPT=S
+ETH1_ADDR='127.0.0.1'
+RV_PROT="tcp"
+SERVICE=$1
+SRV_PORT=$2
+## 最多扫描3次，成功一次即可，以避免网络抖动而导致误判
+for ((i=0; i<3; i++)); do
+       RETVAL=`/usr/bin/nmap -n -s${PROT_OPT} -p ${SRV_PORT} ${ETH1_ADDR} | grep open`
+       [[ -n "${RETVAL}" ]] && SCAN_FLAG=1;break || sleep 10
+done
+  
+if [[ ${SCAN_FLAG} -ne 1 ]]; then
+       ps -ef|grep ${SERVICE}|grep -v 'grep'|awk -F ' ' '{print $2}'|xargs -i kill -9 {}
+       sleep 2
+       su - yxtuser -c  /opt/yxt/tomcats/${SERVICE}/bin/startup.sh
+       echo -e "${SERVICE} is restarting"
+fi
+}
+array=(
+channel-log-parser
+api-task-parser
+)
+
+check_jar(){
+         for n in ${array[*]}
+         do 
+            if [  `ps -ef|grep ${n}|grep -v grep|wc -l` -ne 1 ];then
+                su - yxtuser -c /opt/yxt/tomcats/${n}/bin/startup.sh
+                echo -e "$n is is starting"
+            fi
+         done
+}
+
+check-service sms-admin 9000 
+check-service sms-app 9100             
+check-service audit-server 9090        
+check-service web-pc 7711              
+check-service sms-pm 7700              
+check-service channel-agent-socket 6002       
+check-service sms-api 8513             
+check-service api-pc 7712              
+check-service reply-server 7725        
+check-service mdn-region 2222          
+check-service check-fee-query 9004     
+#check-service sms-socket-interface 7070
+check_jar
