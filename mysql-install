@@ -32,7 +32,15 @@ else
     sed -i 's@1024@20480@g' /etc/security/limits.d/90-nproc.conf
     IP_LAST=`/sbin/ifconfig eth0 | awk -F ':' '/inet addr/{print $2}' | sed 's/[a-zA-Z ]//g'|awk -F . '{print $4}'`
 fi
-
+#关闭Linux透明透明大页功能
+cat >>/etc/rc.local <<EOF
+echo never >/sys/kernel/mm/transparent_hugepage/defrag
+echo never >/sys/kernel/mm/transparent_hugepage/enabled
+EOF
+. /etc/rc.local
+#修改cpu调度策略
+echo "deadline" >/sys/block/sda/queue/scheduler
+echo "echo \"deadline\" >/sys/block/sda/queue/scheduler" >>/etc/rc.local
 
 PORT=$1
 DATADIR=$2
