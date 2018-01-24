@@ -7,7 +7,7 @@
 PATH=/sbin:/bin:/usr/sbin:/usr/bin:/usr/local/bin:/usr/local/sbin
 source /etc/profile 
 #检测服务函数
-check-service(){
+check_service(){
 SCAN_FLAG=0
 PROT_OPT=S
 ETH1_ADDR='127.0.0.1'
@@ -42,16 +42,16 @@ check_jar(){
          done
 }
 
-check-service sms-admin 9000 
-check-service sms-app 9100             
-check-service audit-server 9090        
-check-service web-pc 7711              
-check-service sms-pm 7700              
-check-service channel-agent-socket 6002       
-check-service sms-api 8513             
-check-service api-pc 7712              
-check-service reply-server 7725        
-check-service mdn-region 2222          
-check-service check-fee-query 9004     
+check_service sms-admin 9000 
+check_service sms-app 9100             
+check_service audit-server 9090        
+check_service web-pc 7711              
+check_service sms-pm 7700              
+check_service channel-agent-socket 6002       
+check_service sms-api 8513             
+check_service api-pc 7712              
+check_service reply-server 7725        
+check_service mdn-region 2222          
+check_service check-fee-query 9004     
 #check-service sms-socket-interface 7070
 check_jar
